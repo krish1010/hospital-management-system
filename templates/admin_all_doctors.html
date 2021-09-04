@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Doctors</title>
+    <link rel="stylesheet" href="/static/navbar/navbar.css">
+    <link rel="stylesheet" href="/static/table/table.css">
+</head>
+<body>
+<ul>
+    <li><a>Hi {{ session.username }}</a></li>
+    <li><a href="{{ url_for('admin.add_doctor') }}">Add Doctor</a></li>
+    <li style="float:right"><a class="active" href="{{ url_for('users.logout') }}">Logout</a></li>
+</ul>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">All Doctors</h2>
+        </div>
+        <table id="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Domain</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            {% for doctor in all_doctors %}
+                <tr>
+                    <td><a href="{{ url_for('admin.view_doctor_slots', idx=doctor.idx) }}">{{ doctor.idx }}</a></td>
+                    <td>{{ doctor.user.username }}</td>
+                    <td>{{ doctor.domain.value }}</td>
+                    <td>{{ doctor.user.first_name }}</td>
+                    <td>{{ doctor.user.last_name }}</td>
+                    <td><a href="{{ url_for('admin.delete', idx=doctor.idx) }}">Remove</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</body>
+</html>

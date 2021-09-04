@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add slot</title>
+    <style>
+        .center {
+            margin: auto;
+            width: 50%;
+            border: 3px solid green;
+            padding: 10px;
+            font-size: x-large;
+        }
+
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="center">
+    <h2>Add slot</h2>
+    <form action="{{ url_for('admin.add_slot', idx=idx) }}" method="post">
+        <label for="date"><strong>Enter date:</strong></label>
+        <input type="date" id="date" name="date" required>
+        <br>
+        <label for="slot"><strong>Select slot:</strong></label>
+        <br>
+        <input type="checkbox" id="slot1" name="slot1" value="True">
+        <label for="slot1">Slot 1</label><br>
+        <input type="checkbox" id="slot2" name="slot2" value="True">
+        <label for="slot2">Slot 2</label><br>
+        <input type="checkbox" id="slot3" name="slot3" value="True">
+        <label for="slot3">Slot 3</label><br>
+        <input type="checkbox" id="slot3" name="slot4" value="True">
+        <label for="slot4">Slot 4</label><br>
+        <button type="submit" class="button">Add</button>
+    </form>
+</div>
+</body>
+</html>

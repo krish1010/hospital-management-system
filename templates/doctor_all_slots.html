@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All slots</title>
+    <link rel="stylesheet" href="/static/navbar/navbar.css">
+    <link rel="stylesheet" href="/static/table/table.css">
+</head>
+<body>
+{% if session.user_type == 'PATIENT' %}
+    <ul>
+        <li><a>Hi {{ session.username }}</a></li>
+        <li><a href="{{ url_for('patients.doctors') }}">View Doctors</a></li>
+        <li><a href="{{ url_for('patients.appointments') }}">View Appointments</a></li>
+        <li style="float:right"><a class="active" href="{{ url_for('users.logout') }}">Logout</a></li>
+    </ul>
+{% elif session.user_type == 'ADMIN' %}
+    <ul>
+        <li><a>Hi {{ session.username }}</a></li>
+        <li><a href="{{ url_for('admin.add_slot', idx=doctor_id) }}">Add slot</a></li>
+        <li><a href="{{ url_for('admin.doctors') }}">View Doctors</a></li>
+        <li style="float:right"><a class="active" href="{{ url_for('users.logout') }}">Logout</a></li>
+    </ul>
+{% endif %}
+<br>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">Slots</h2>
+        </div>
+        <table id="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Slot 1</th>
+                <th>Slot 2</th>
+                <th>Slot 3</th>
+                <th>Slot 4</th>
+            </tr>
+            </thead>
+            {% for slot in slots %}
+                <tr>
+                    <td>{{ slot.idx }}</td>
+                    <td>{{ slot.date }}</td>
+                    <td>
+                        {% if slot.slot1 == 'True' and session.user_type != 'ADMIN' %}
+                            <a href="{{ url_for('patients.book', doctor_id=doctor_id, patient_id=session.user_idx, slot_id=slot.idx, slot_number='Slot1') }}">Book</a>
+                        {% elif slot.slot1 == 'True' and session.user_type == 'ADMIN' %}
+                            Available
+                        {% elif slot.slot1 == session.user_idx or slot.slot1 != 'False' %}
+                            Booked
+                        {% else %}
+                            Unavailable
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if slot.slot2 == 'True' and session.user_type != 'ADMIN' %}
+                            <a href="{{ url_for('patients.book', doctor_id=doctor_id, patient_id=session.user_idx, slot_id=slot.idx, slot_number='Slot2') }}">Book</a>
+                        {% elif slot.slot2 == 'True' and session.user_type == 'ADMIN' %}
+                            Available
+                        {% elif slot.slot2 == session.user_idx or slot.slot2 != 'False' %}
+                            Booked
+                        {% else %}
+                            Unavailable
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if slot.slot3 == 'True' and session.user_type != 'ADMIN' %}
+                            <a href="{{ url_for('patients.book', doctor_id=doctor_id, patient_id=session.user_idx, slot_id=slot.idx, slot_number='Slot3') }}">Book</a>
+                        {% elif slot.slot3 == 'True' and session.user_type == 'ADMIN' %}
+                            Available
+                        {% elif slot.slot3 == session.user_idx  or slot.slot3 != 'False' %}
+                            Booked
+                        {% else %}
+                            Unavailable
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if slot.slot4 == 'True' and session.user_type != 'ADMIN' %}
+                            <a href="{{ url_for('patients.book', doctor_id=doctor_id, patient_id=session.user_idx, slot_id=slot.idx, slot_number='Slot4') }}">Book</a>
+                        {% elif slot.slot4 == 'True' and session.user_type == 'ADMIN' %}
+                            Available
+                        {% elif slot.slot4 == session.user_idx or slot.slot4 != 'False' %}
+                            Booked
+                        {% else %}
+                            Unavailable
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</body>
+</html>

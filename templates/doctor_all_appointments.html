@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Appointments</title>
+    <link rel="stylesheet" href="/static/navbar/navbar.css">
+    <link rel="stylesheet" href="/static/table/table.css">
+</head>
+<body>
+<ul>
+    <li><a>Hi {{ session.username }}</a></li>
+    {% if session.user_type != 'DOCTOR' %}
+        <li><a href="{{ url_for('patients.doctors') }}">View Doctors</a></li>
+    {% endif %}
+    <li style="float:right"><a class="active" href="{{ url_for('users.logout') }}">Logout</a></li>
+</ul>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h2 class="panel-title">Your Appointments</h2>
+        </div>
+        <table id="table">
+            <thead>
+            <tr>
+                <th>Doctor Name</th>
+                <th>Patient Name</th>
+                <th>Slot Number</th>
+                <th>Appointment Date</th>
+                <th>Prescription</th>
+            </tr>
+            </thead>
+            {% for a in all_appointments %}
+                <tr>
+                    <td>{{ a.doctor.first_name }}</td>
+                    <td>{{ a.patient.first_name }}</td>
+                    <td>{{ a.slot_number }}</td>
+                    <td>{{ a.date }}</td>
+                    <td><a href="{{ url_for('patients.view_appointment', idx=a.idx) }}">View prescription</a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prescription</title>
+    <link rel="stylesheet" href="/static/navbar/navbar.css">
+    <style>
+        div {
+            border: 1px solid gray;
+            padding: 8px;
+        }
+
+        h1 {
+            text-align: center;
+            text-transform: uppercase;
+            color: #4CAF50;
+        }
+
+        p {
+            text-indent: 50px;
+            text-align: justify;
+            letter-spacing: 3px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #008CBA;
+        }
+
+        .center {
+            margin: auto;
+            width: 50%;
+            border: 3px solid green;
+            padding: 10px;
+            font-size: x-large;
+        }
+
+        .button {
+            background-color: #4CAF50; /* Green */
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+<ul>
+    <li><a>Hi {{ session.username }}</a></li>
+    {% if session.user_type != 'DOCTOR' %}
+        <li><a href="{{ url_for('patients.doctors') }}">View Doctors</a></li>
+    {% endif %}
+    {% if session.user_type == 'PATIENT' %}
+        <li><a href="{{ url_for('patients.appointments') }}">View Appointments</a></li>
+    {% elif session.user_type == 'DOCTOR' %}
+        <li><a href="{{ url_for('doctors.appointments') }}">View Appointments</a></li>
+    {% endif %}
+    <li style="float:right"><a class="active" href="{{ url_for('users.logout') }}">Logout</a></li>
+</ul>
+<form action="{{ url_for('doctors.prescription', idx=appointment_idx) }}" method="post">
+    {% if session.user_type == 'DOCTOR' %}
+        <div class="center">
+            <p>Prescription</p>
+            <textarea id="prescription" name="prescription" rows="20" cols="100">{{ prescription_text }}</textarea><br>
+            {% if session.user_type == 'DOCTOR' %}
+                <button type="submit" class="button">Update</button>
+            {% endif %}</div>
+    {% elif session.user_type == 'PATIENT' %}
+        <div>
+            <h1>Prescription</h1>
+            <p>{{ prescription_text }}</p>
+        </div>
+    {% endif %}
+</form>
+</body>
+</html>
