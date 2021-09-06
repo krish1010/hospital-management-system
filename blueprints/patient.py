@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, session
 
 from database.models.tables.appointments import Appointment
 from database.models.tables.doctors import Doctor
-from managers.slot import get_slot_by_doctor_id, book_slot
+from managers.slot import get_slot_by_doctor_id, book_slot, get_doctor_name
 
 PATIENTS_BLUEPRINT = Blueprint('patients', __name__)
 USERS_LOGIN = 'users.login'
@@ -25,9 +25,11 @@ def doctors():
 @PATIENTS_BLUEPRINT.route('/doctors/<idx>', methods=['GET'])
 def view_doctor_slots(idx):
     slots = get_slot_by_doctor_id(idx)
+    doc_name = get_doctor_name(idx)
     context = {
         'slots': slots,
-        'doctor_id': idx
+        'doctor_id': idx,
+        'doc_name': doc_name
     }
     return render_template('doctor_all_slots.html', **context)
 

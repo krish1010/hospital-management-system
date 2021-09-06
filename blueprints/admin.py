@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, redirect, url_for, flash, session
 
 from database.models.tables.doctors import Doctor
-from managers.slot import get_slot_by_doctor_id, create_slot
+from managers.slot import get_slot_by_doctor_id, create_slot, get_doctor_name
 from managers.users import create_user, delete_user
 
 ADMIN_BLUEPRINT = Blueprint('admin', __name__)
@@ -71,9 +71,11 @@ def delete(idx):
 def view_doctor_slots(idx):
     if session.get('user_type') == 'ADMIN':
         slots = get_slot_by_doctor_id(idx)
+        doc_name = get_doctor_name(idx)
         context = {
             'slots': slots,
-            'doctor_id': idx
+            'doctor_id': idx,
+            'doc_name': doc_name
         }
         return render_template('doctor_all_slots.html', **context)
     else:
@@ -84,7 +86,8 @@ def view_doctor_slots(idx):
 def add_slot(idx=None):
     if session.get('user_type') == 'ADMIN':
         if request.method == 'GET':
-            return render_template('doctor_add_slot.html', **{'idx': idx})
+            doc_name = get_doctor_name(idx)
+            return render_template('doctor_add_slot.html', **{'idx': idx, 'doc_name': doc_name})
         else:
             date = request.form.get('date')
             slot1, slot2, slot3, slot4 = request.form.get('slot1'), request.form.get('slot2'), request.form.get(
